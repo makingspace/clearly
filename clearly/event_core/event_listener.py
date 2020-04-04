@@ -150,7 +150,7 @@ class EventListener(object):
     def compile_task_result(task):
         result = task.result
         # celery 4 sends results converted as strings, sometimes truncated (...)
-        if task.worker.sw_ver < '4':
+        if task.worker.sw_ver and task.worker.sw_ver < '4':
             # celery 3 tasks' results are converted twice.
             result = safe_compile_text(result, raises=True)
         # compile with `raises`, to detect truncated results.
