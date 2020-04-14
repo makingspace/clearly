@@ -23,7 +23,10 @@ all:
 	@grep -E "^\w+:" makefile | cut -d: -f1
 
 install:
-	pip install -r requirements/dev.txt -r requirements/test.txt
+	pip install -e .[test]
+
+dev: install
+	pip install -r requirements/dev.txt
 
 clean: clean-build clean-pyc
 
@@ -41,7 +44,7 @@ build-python: clean
 build-docker:
 	docker build -t $(IMAGE_BUILD) -t $(IMAGE_MINOR) -t $(IMAGE_MAJOR) -t $(IMAGE_LATEST) .
 
-release: release-python release-docker
+release: test release-python release-docker
 
 release-python: build-python
 	twine upload dist/*
